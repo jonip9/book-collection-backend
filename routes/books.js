@@ -22,7 +22,7 @@ MongoClient.connect(url, {
 
     router.post('/', async (req, res, next) => {
       await collection.insertOne(req.body)
-        .then((result) => {
+        .then(() => {
           res.sendStatus(200);
         })
         .catch(error => console.error(error));
