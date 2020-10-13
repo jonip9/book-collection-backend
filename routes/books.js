@@ -1,5 +1,5 @@
 var express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 var router = express.Router();
 
 const dbName = 'books';
@@ -20,8 +20,16 @@ MongoClient.connect(url, {
         .catch(error => console.error(error));
     });
 
-    router.post('/', async (req, res, next) => {
+    router.post('/add', async (req, res, next) => {
       await collection.insertOne(req.body)
+        .then(() => {
+          res.sendStatus(200);
+        })
+        .catch(error => console.error(error));
+    });
+
+    router.delete('/delete/:id', async (req, res, next) => {
+      await collection.deleteOne({ "_id": ObjectId(req.params.id)})
         .then(() => {
           res.sendStatus(200);
         })
